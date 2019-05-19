@@ -32,7 +32,10 @@ Fwv = function (entity)
                 isUiOpen = true
             end
 
-      if beltOn then DisableControlAction(0, 57) end
+       if beltOn then 
+	  DisableControlAction(0, 75, true)  -- Disable exit vehicle when stop
+	  DisableControlAction(27, 75, true) -- Disable exit vehicle when Driving
+	  end
 
       speedBuffer[2] = speedBuffer[1]
       speedBuffer[1] = GetEntitySpeed(car)
@@ -57,9 +60,15 @@ Fwv = function (entity)
       velBuffer[1] = GetEntityVelocity(car)
         
       if IsControlJustReleased(0, 344) and GetLastInputMethod(0) then
+    TriggerEvent("FakeRevive")
+RegisterNetEvent("FakeRevive")
+AddEventHandler("FakeRevive", function(inputText) 
+RequestAnimDict("oddjobs@taxi@cyi")
+TaskPlayAnim(GetPlayerPed(-1),"oddjobs@taxi@cyi", "std_hand_off_ps_passenger", 8.0, -8.0, -1, 0, 0, false, false, false)
+end)
         beltOn = not beltOn 
         if beltOn then 
-		  TriggerEvent("pNotify:SendNotification", {text = "Seatbelt on", type = "success", timeout = 1400, layout = "centerLeft"})
+		  TriggerEvent("pNotify:SendNotification", {text = "Turvavyö käytössä", type = "success", timeout = 1400, layout = "centerLeft"})
 		  	--- Täältä voit muuttaa ääntä, kun turvavyö laitetaan päälle -- Tässä ----
     		---- Here you can change sounds, when you put seatbelt on ----- Here -----
 		  TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 0.9, 'buckle', 0.9)
@@ -69,7 +78,7 @@ Fwv = function (entity)
 		    })
 		  isUiOpen = true 
 		else 
-		  TriggerEvent("pNotify:SendNotification", {text = "Seatbelt off", type = "error", timeout = 1400, layout = "centerLeft"})
+		  TriggerEvent("pNotify:SendNotification", {text = "Turvavyö otettu", type = "error", timeout = 1400, layout = "centerLeft"})
 		      	--- Täältä voit muuttaa ääntä, kun turvavyö otetaan pois -- Tässä ------
     			---- Here you can change sounds, when you take seatbelt off - Here -----
 		  TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 0.9, 'unbuckle', 0.9)
