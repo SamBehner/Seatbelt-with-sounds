@@ -10,3 +10,7 @@ files {
 	'html/style.css',
 	'img/seatbelt.png'
 }
+
+dependencies {
+	'InteractSoundS'
+}
